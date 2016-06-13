@@ -57,7 +57,7 @@ defmodule Tirexs.DSL.Logic do
 
   @doc false
   def extract_options(params) do
-    if Dict.size(params) > 1 do
+    if length(params) > 1 do
       [Enum.fetch!(params, 0), Enum.fetch!(params, 1), get_options(params)]
     else
       [Enum.fetch!(params, 0), [],[]]
