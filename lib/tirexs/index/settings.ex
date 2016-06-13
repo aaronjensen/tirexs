@@ -15,8 +15,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro filters([do: block]) do
     quote do
-      if var!(index)[:settings][:analysis] == nil do
-        var!(index) = put_setting(var!(index), :analysis)
+      var!(index) = if var!(index)[:settings][:analysis] == nil do
+        put_setting(var!(index), :analysis)
+      else
+        var!(index)
       end
       unquote(block)
     end
@@ -24,8 +26,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro analysis([do: block]) do
     quote do
-      if var!(index)[:settings][:analysis] == nil do
-        var!(index) = put_setting(var!(index), :analysis)
+      var!(index) = if var!(index)[:settings][:analysis] == nil do
+        put_setting(var!(index), :analysis)
+      else
+        var!(index)
       end
       unquote(block)
     end
@@ -40,8 +44,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro analyzer(name, value) do
     quote do
-      if var!(index)[:settings][:analysis][:analyzer] == nil do
-        var!(index) = put_index_setting(var!(index), :analysis, :analyzer)
+      var!(index) = if var!(index)[:settings][:analysis][:analyzer] == nil do
+        put_index_setting(var!(index), :analysis, :analyzer)
+      else
+        var!(index)
       end
       [name, value] = [unquote(name), unquote(value)]
       var!(index) = add_index_setting(var!(index), :analysis, :analyzer, Dict.put([], to_atom(name), value))
@@ -50,8 +56,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro blocks(value) do
     quote do
-      if var!(index)[:settings][:index][:blocks] == nil do
-        var!(index) = put_index_setting(var!(index), :index, :blocks)
+      var!(index) = if var!(index)[:settings][:index][:blocks] == nil do
+        put_index_setting(var!(index), :index, :blocks)
+      else
+        var!(index)
       end
       value = unquote(value)
       var!(index) = add_index_setting(var!(index), :index, :blocks, value)
@@ -60,9 +68,11 @@ defmodule Tirexs.Index.Settings do
 
   defmacro cache(value) do
     quote do
-      if var!(index)[:settings][:index][:cache] == nil do
-        var!(index) = put_index_setting(var!(index), :index, :cache)
-        var!(index) = add_index_setting(var!(index), :index, :cache, [filter: []])
+      var!(index) = if var!(index)[:settings][:index][:cache] == nil do
+        index = put_index_setting(var!(index), :index, :cache)
+        add_index_setting(index, :index, :cache, [filter: []])
+      else
+        var!(index)
       end
       value = unquote(value)
       var!(index) = add_index_setting_nested_type(var!(index), :index, :cache, :filter, value)
@@ -71,8 +81,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro filter(name, value) do
     quote do
-      if var!(index)[:settings][:analysis][:filter] == nil do
-        var!(index) = put_index_setting(var!(index), :analysis, :filter)
+      var!(index) = if var!(index)[:settings][:analysis][:filter] == nil do
+        put_index_setting(var!(index), :analysis, :filter)
+      else
+        var!(index)
       end
       [name, value] = [unquote(name), unquote(value)]
       var!(index) = add_index_setting(var!(index), :analysis, :filter, Dict.put([], to_atom(name), value))
@@ -81,8 +93,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro tokenizer(name, value) do
     quote do
-      if var!(index)[:settings][:analysis][:tokenizer] == nil do
-        var!(index) = put_index_setting(var!(index), :analysis, :tokenizer)
+      var!(index) = if var!(index)[:settings][:analysis][:tokenizer] == nil do
+        put_index_setting(var!(index), :analysis, :tokenizer)
+      else
+        var!(index)
       end
       [name, value] = [unquote(name), unquote(value)]
       var!(index) = add_index_setting(var!(index), :analysis, :tokenizer, Dict.put([], to_atom(name), value))
@@ -91,8 +105,10 @@ defmodule Tirexs.Index.Settings do
 
   defmacro translog(value) do
     quote do
-      if var!(index)[:settings][:index][:translog] == nil do
-        var!(index) = put_index_setting(var!(index), :index, :translog)
+      var!(index) = if var!(index)[:settings][:index][:translog] == nil do
+        put_index_setting(var!(index), :index, :translog)
+      else
+        var!(index)
       end
       value = unquote(value)
       var!(index) = add_index_setting(var!(index), :index, :translog, value)
